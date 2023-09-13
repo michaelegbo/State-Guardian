@@ -301,3 +301,6 @@ This documentation gives a more in-depth overview of how to use the state manage
 
 Author: Michael Egbo
 Email: https://www.linkedin.com/in/michaelegbo/
+Package - https://www.npmjs.com/package/state-guardian
+
+TO Contribute see - https://github.com/michaelegbo/State-Guardian
