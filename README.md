@@ -35,7 +35,52 @@ Gracefully manage errors and inform the state.
 
 Store frequently accessed data to improve performance.
 
+
+# State Guardian Library Documentation
+
+State Guardian is a powerful state management library for Angular applications. It provides various features for managing application state, handling asynchronous effects, managing entities, normalizing data, caching, and more. This documentation will guide you through the installation and usage of State Guardian.
+
+## Installation
+
+To install the `state-guardian` library in your Angular project, follow these steps:
+
+### Using npm
+
+```bash
+npm install state-guardian
+```
+
+### Using yarn
+
+```bash
+yarn add state-guardian
+```
+
 ## Usage
+
+### Import the `StateGuardianModule`
+
+In your Angular application, you should import and add the `StateGuardianModule` to your application's module. Here's an example of how to do this:
+
+```typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { StateGuardianModule } from 'state-guardian'; // Import the StateGuardianModule
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule, StateGuardianModule], // Add StateGuardianModule to your imports
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+### Using StateGuardian Services
+
+Now that you have imported the `StateGuardianModule`, you can use StateGuardian services in your Angular components and services. Below are examples of how to use various features of State Guardian:
+
 
 ### State Management
 
