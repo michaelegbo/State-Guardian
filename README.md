@@ -7,9 +7,21 @@ The Custom State Manager is designed by Michael Egbo to manage state, side effec
 
 ## Features
 
-### 1. State Management
+### 1. State Management store
 
 Track and modify different parts of your application state.
+
+## dispatch:
+
+Purpose: Used to dispatch an action to update the state.
+When to Use: You use dispatch when you want to trigger a change in the application state. It's typically used when you need to update the state based on user interactions or other events.
+Example: When a user logs in, you may dispatch an action to update the user's login status in the state.
+
+## select:
+
+Purpose: Used to select and observe specific parts of the application state.
+When to Use: You use select when you want to "listen" to changes in a specific part of the state. It allows you to react to state changes and update your component's properties accordingly.
+Example: You might use select to watch for changes in the user's login status or other parts of the state and take specific actions in response to those changes.
 
 ### 2. Effects Handling
 
@@ -114,6 +126,113 @@ const loginEffectConfig: EffectConfig = {
   errorHandler: (error) => { return { user: { error, isLoggedIn: false } }; }
 };
 this.effectsService.handleEffect(loginEffectConfig);
+```
+
+# Example use case below 
+
+```typescript
+import {
+  CustomStore,
+  EffectsService,
+} from 'state-guardian';
+
+interface User {
+  id: number;
+  username: string;
+  token: string;
+}
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
+})
+export class LoginComponent implements OnInit {
+  form: UntypedFormGroup;
+  isLoading = false;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private userService: UserService,
+    private fb: UntypedFormBuilder,
+    private store: CustomStore<{ user: User }>,
+    private effectsService: EffectsService
+  ) {}
+
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      email: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+    });
+
+    // Watch for changes in the 'user' state and react accordingly
+    this.store.select('user').subscribe((userState: User) => {
+      this.isLoading = userState.isLoading;
+
+      if (userState.isLoggedIn) {
+        this.router.navigateByUrl('/home');
+      }
+
+      if (userState.error) {
+        Swal.fire('Hi...', 'Kindly check your username or password', 'warning');
+      }
+    });
+  }
+
+  onSubmit() {
+    if (!this.form.valid) {
+      Swal.fire('Hi...', 'Kindly check your username or password', 'warning');
+      return;
+    }
+
+    const credentials = {
+      email: this.form.value.email,
+      password: this.form.value.password,
+    };
+
+    this.isLoading = true;
+
+    this.effectsService.handleEffect(
+      () => this.fakeLogin(credentials).pipe(take(1)),
+      (response: User) => {
+        localStorage.a = new Date();
+        this.authService.setUserLoggedIn(true);
+        this.userService.setToken(response.token);
+
+        // Dispatch the updated user state to the store
+        this.store.dispatch(() => ({ user: response }));
+
+        logEvent(getAnalytics(), 'login', { method: 'Password' });
+        this.router.navigateByUrl('/home');
+      },
+      (error: any) => {
+        Swal.fire('Hi...', 'Kindly check your username or password', 'warning');
+        logEvent(getAnalytics(), 'login_failed', { method: 'Password' });
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // Simulated login API call, replace with your actual login logic
+  private fakeLogin(credentials: { email: string; password: string }) {
+    return new Observable<User>((observer) => {
+      setTimeout(() => {
+        if (credentials.email === 'user@example.com' && credentials.password === 'password') {
+          const user: User = {
+            id: 1,
+            username: 'example_user',
+            token: 'example_token',
+          };
+          observer.next(user);
+        } else {
+          observer.error('Invalid credentials');
+        }
+        observer.complete();
+      }, 1000);
+    });
+  }
+}
 ```
 
 ### Entity Management
