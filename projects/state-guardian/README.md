@@ -7,45 +7,58 @@ The Custom State Manager is designed by Michael Egbo to manage state, side effec
 
 ## Features
 
-### 1. State Management store
 
-Track and modify different parts of your application state.
+### State Management store
+   - Manages and tracks the state of different parts of the application using the `CustomStore`.
+   - Allows for selecting specific slices of the state for observation.
 
-## dispatch:
+#### dispatch:
 
 Purpose: Used to dispatch an action to update the state.
 When to Use: You use dispatch when you want to trigger a change in the application state. It's typically used when you need to update the state based on user interactions or other events.
 Example: When a user logs in, you may dispatch an action to update the user's login status in the state.
 
-## select:
+#### select:
 
 Purpose: Used to select and observe specific parts of the application state.
 When to Use: You use select when you want to "listen" to changes in a specific part of the state. It allows you to react to state changes and update your component's properties accordingly.
 Example: You might use select to watch for changes in the user's login status or other parts of the state and take specific actions in response to those changes.
 
-### 2. Effects Handling
+### 2. *Effects Handling*:
+   - Manages side effects, especially asynchronous operations like HTTP requests.
+   - Updates the state based on the result of these side effects.
 
-Manage side effects like API calls.
+### 3. *Middleware Integration*:
+   - Intercepts actions to introduce additional behavior or side effects.
+   - Useful for logging, analytics, or any other cross-cutting concerns.
 
-### 3. Middleware Integration
+### 4. *Entity Management Utilities*:
+   - Provides utilities to manage collections of entities efficiently.
+   - Supports operations like adding one or many entities, updating, and deleting entities.
 
-Introduce custom behavior for actions, such as logging.
+### 5. *Data Normalization*:
+   - Transforms nested or complex data structures into a flat, consistent format.
+   - Helps in efficiently managing and querying data.
 
-### 4. Entity Management
+### 6. *Caching Mechanism*:
+   - Caches frequently accessed data to reduce the need for repeated network requests.
+   - Improves performance and can provide offline data access.
 
-Efficiently handle collections of entities.
+### 7. *Error Handling*:
+   - Handles errors during side effects and updates the state accordingly.
+   - Provides a consistent way to manage and display errors to users.
 
-### 5. Data Normalization
+### 8. *Flexible API Calls*:
+   - The effects service can handle both direct HTTP calls and calls through provided services, offering flexibility in how backend interactions are managed.
 
-Ensure consistent data structure and querying.
+### 9. *Immutable State Updates*:
+   - Ensures that state updates are immutable, leading to predictable state changes and easier debugging.
 
-### 6. Error Handling
+### 10. *Integration with External Libraries*:
+   - Designed to work seamlessly with libraries like RxJS, making it easier to handle asynchronous operations and reactive programming patterns.
 
-Gracefully manage errors and inform the state.
-
-### 7. Caching
-
-Store frequently accessed data to improve performance.
+### 11. *Modularity and Reusability*:
+   - Components like the store, middleware, and effects are modular, allowing for reuse across different parts of the application or even different applications.
 
 
 # State Guardian Library Documentation
